@@ -1,7 +1,6 @@
 from scrapy.spiders import Rule
 from scrapy.linkextractors import LinkExtractor
 import redis
-import pymongo
 
 from scrapy_redis.spiders import RedisCrawlSpider
 
