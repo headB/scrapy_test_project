@@ -1,9 +1,10 @@
+from scrapy import Request
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy_redis.spiders import CrawlSpider
 from example.items import SogouItem
 import re
-
+from urllib.parse import urljoin
 
 class DmozSpider(CrawlSpider):
     """Follow categories and extract links."""
@@ -31,12 +32,32 @@ class DmozSpider(CrawlSpider):
         #items['title'] = response.xpath("//title/text()").extract()
         items['languageNum'] = ''.join(response.xpath('//*[@id="dict_cate_show"]/table/tbody/tr/td[6]/div/a//text()').extract())
 
+        firstDemoUrl = ''
 
         if  items['languageNum']:
             x1 = re.search(r'方言',items['languageNum'])
             if 'group' not in dir(x1):
-                items['languageNum'] = ''.join(response.xpath('////*[@id="dict_cate_show"]/table/tbody/tr/td[5]/div/a//text()').extract())
+                items['languageNum'] = ''.join(response.xpath('//*[@id="dict_cate_show"]/table/tbody/tr/td[5]/div/a//text()').extract())
+                firstDemoUrl = response.xpath('//*[@id="dict_cate_show"]/table/tbody/tr/td[5]/div/a/@href').extract()
+            else:
+                firstDemoUrl = response.xpath('//*[@id="dict_cate_show"]/table/tbody/tr/td[6]/div/a//@href').extract()
+
+        ##准备测试,看看能不能将自己的优秀基因遗传下去
+
+        #firstDemoUrl = response.xpath()
+        if firstDemoUrl:
+            base_url = response.url
+            firstDemoUrl = urljoin(base_url,firstDemoUrl[0])
+            yield Request(firstDemoUrl,meta={'sogouItems':items},callback=self.xx1,)
+
+    def xx1(self,response):
+        items = response.meta['sogouItems']
+
+        x1 = ''.join(response.xpath('//div[@id="dict_detail_list"]/div[2]//text()').extract())
+        x1 = x1.replace(' ','').replace('\r\n','').replace('\t','')
+        items['description'] = x1
         yield items
+
 
     def parse_directory(self, response):
         items = SogouItem()
