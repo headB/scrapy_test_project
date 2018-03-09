@@ -27,6 +27,7 @@ class SogouItem(Item):
     crawled = Field()
     spider = Field()
     urlLink = Field()
+    description = Field()
 
 
 class ExampleLoader(ItemLoader):

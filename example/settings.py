@@ -43,4 +43,4 @@ LOG_LEVEL = 'DEBUG'
 
 #有这个东西的话,下载页面也太慢了吧....铪哈哈!!
 #DOWNLOAD_DELAY = 1
-DOWNLOAD_DELAY = 0.1
+#DOWNLOAD_DELAY = 0.1
