@@ -19,19 +19,12 @@ class ExampleItem(Item):
     spider = Field()
     url = Field()
 
-class ItcastItem(Item):
-    title = Field()
-    h1 = Field()
-    h2 = Field()
-    name = Field()
-    description = Field()
-    link = Field()
-    crawled = Field()
-    spider = Field()
-    url = Field()
 
 class SogouItem(Item):
     title = Field()
+    crawled = Field()
+    spider = Field()
+    urlLink = Field()
 
 
 class ExampleLoader(ItemLoader):
