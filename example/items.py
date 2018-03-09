@@ -22,6 +22,8 @@ class ExampleItem(Item):
 
 class SogouItem(Item):
     title = Field()
+    province = Field()
+    languageNum = Field()
     crawled = Field()
     spider = Field()
     urlLink = Field()
